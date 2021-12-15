@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="casino.js"></script>
+        <link rel="stylesheet" type="text/css" href="casino.css">
+        <title>The Not-So-Grand Casino</title>
+    </head>
+    <body>
+        <button class="button" onclick="leave()">Go back</button>
+        <!-- This is to introduce the craps coding -->
+        <h1>Welcome to the Casino!</h1>
+        <button onclick="playLofi()" style="border-radius: 30%; background-color: rgba(255, 0, 0, 0.945);">Play a song</button>
+        <br>
+        <h2>Welcome to Craps!<br/> Press the button to begin.</h2>
+
+          <!-- button to roll the dice -->
+        <button  onclick="craps()" style = "background-color: darkgreen;">Roll the Dice</button>
+        <br/>
+        <br/> 
+        <!-- div for transfer between java and html -->
+        <div id="die1Result">Die 1: #</div>
+        <div id="die2Result">Die 2: #</div>
+        <div id="sumResult">The sum of the numbers is: #</div>
+        <div id="conclusion"></div>
+        <br/>
+
+  
+
+        <!-- trying other games: Higher or Lower -->
+        <h2>Welcome to Higher or Lower!<br/> Press the buttons to try your luck.</h2>
+
+        <!-- Start the game  -->
+        <button onclick="high()" class="button">High</button>
+        <button onclick="even()" class="button">Equal</button>
+        <button onclick="low()" class="button">Low</button>
+
+
+        </br>
+        </br>
+        <!-- the details -->
+        <div id= "dealer">Dealer Roll: ? </div>
+        <div id= "player">Player Roll: ? </div>
+        <div id= "concHi"></div>
+
+
+        <!-- trying other games: Coin Toss -->
+        <h2>Welcome to Coin Toss!<br/> Press the buttons to try your luck.</h2>
+
+        <!-- the button to flip a coin -->
+        <button  onclick="heads()" class="button">Heads</button>
+        <button  onclick="tails()" class="button">Tails</button>
+
+        </br>
+        </br>
+        <!-- the details -->
+        <div id= "coin"></div>
+    </body>
+
+
+</html>
