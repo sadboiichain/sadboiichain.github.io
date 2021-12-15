@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--This page was made to complete the assignment: 
+    Javascript DOM and Document Structure with Tables, Themes, and Mock Data
+    By Shan V.-->
+<html lang="en">
+<head>
+    <!--the name of the tab-->
+    <title>Space Program</title>
+    <!-- css file  -->
+    <link rel="stylesheet" type="text/css" href="spaceDecoration.css">
+    <!-- java files -->
+    <script src="spaceFunctions.js"></script>
+    <script src="dataLoader.js"></script>
+
+</head>
+
+<body>
+    
+        <!--the UAT logo-->
+        <img src="UATspaceLogo-2.jpg"/> 
+        <!--The main text-->
+        <h1>UAT Space Program</h1>
+
+
+         <!--display the countdown to the user-->
+        <div id="countdownTimer"></div>
+        <br>
+
+        <!--the countdown-->
+        <button  onclick="countDown()" style="background-color: green;">Start the count.</button>
+
+        <br>
+        <br>
+
+        <!-- the log in code -->
+        <form id="creditSubmit" onsubmit="return false">
+            Name:     <input type="text" id="Name" /> <br>
+            Badge #:      <input type="text" id="Badge" /> <br>
+            <input type="submit" onclick="Check();" />
+        </form>
+        <!-- in case of an error -->
+        <div id="error"></div>
+        <br>
+        <br>
+
+         <!-- The Table and beginning of the event driven programming -->
+         <!--to set up a table-->
+
+        <table id="data" border="2" style="color: aqua;">
+            <col style="width:5cm">
+            <col style="width:.5cm">
+            <thead>
+                <tr style="font-family:fantasy">
+                    <th align="left">Data Type</th>
+                    <th align="left">Reading</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="seconds"></tr>
+                <tr id=latitude></tr>
+                <tr id=longitude></tr>
+                <tr id=gps_altitude></tr>
+                <tr id=bmpSensor_altitude></tr>
+                <tr id=bmpSensor_pressure></tr>
+                <tr id=bmpSensor_temp></tr>
+                <tr id=digSensor_temp></tr>
+                <tr id=cssSensor_temp></tr>
+                <tr id=cssSensor_eCO2></tr>
+                <tr id=cssSensor_TVOC></tr>
+                <tr id=UV></tr>
+                <tr id=accelX></tr>
+                <tr id=accelY></tr>
+                <tr id=accelZ></tr>
+                <tr id=magneticX></tr>
+                <tr id=magneticY></tr>
+                <tr id=magneticZ></tr>
+                <tr id=gyroX></tr>
+                <tr id=gyroY></tr>
+                <tr id=gyroZ></tr>
+            </tbody>
+        </table>
+        <br>
+        <p>
+            <!-- buttons to run the table -->
+            <button id="startButton"  value="Start" onclick="start();" style="background-color: green;" >Start</button>
+            <button id="stopButton"  value="Stop" onclick="stop();" disabled=true style="background-color: red;" >Stop</button>
+        </p>
+        <br><br>
+        <table class="table3">
+            <thead>
+                <tr>
+                    <th>The time is :</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+                <tr id="time">
+
+                    
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- the music button -->
+        <button onclick="playLofi()" style="border-radius: 30%; background-color: rgba(0, 247, 255, 0.945);">Play a song</button>
+        
+        <!-- This is to introduce the craps coding -->
+        <h2>Welcome to the Casino!</h2>
+      
+        <p>Welcome to Craps!<br/> Press the button to begin.</p>
+
+          <!-- button to roll the dice -->
+        <button  onclick="craps()" style = "background-color: darkgreen;">Roll the Dice</button>
+        <br/>
+        <br/> 
+        div for transfer between java and html
+        <div id="die1Result">Die 1: #</div>
+        <div id="die2Result">Die 2: #</div>
+        <div id="sumResult">The sum of the numbers is: #</div>
+        <div id="conclusion"></div>
+        <br/>
+
+  
+
+        <!-- trying other games: Higher or Lower -->
+        <p>Welcome to Higher or Lower!<br/> Press the buttons to try your luck.</p>
+
+        <!-- Start the game  -->
+        <button onclick="high()" style="background-color: darkgreen;">High</button>
+        <button onclick="even()" style="background-color: darkgreen;">Equal</button>
+        <button onclick="low()" style="background-color: darkgreen;">Low</button>
+
+
+        </br>
+        </br>
+        <!-- the details -->
+        <div id= "dealer">Dealer Roll: ? </div>
+        <div id= "player">Player Roll: ? </div>
+        <div id= "concHi"></div>
+
+
+        <!-- trying other games: Coin Toss -->
+        <p>Welcome to Coin Toss!<br/> Press the button to try your luck.</p>
+
+        <!-- the button to flip a coin -->
+        <button  onclick="heads()" style = "background-color: darkgreen;">Heads</button>
+        <button  onclick="tails()" style = "background-color: darkgreen;">Tails</button>
+
+        </br>
+        </br>
+        <!-- the details -->
+        <div id= "coin"></div>
+
+    </body>
+    <script>
+        // Global variables
+        var theTime = new Date();
+        var tempTime = new Date();
+        var time_interval = 5000;
+        var last_iteration = 0;
+        var running = true;
+        var index = 0;
+        var timer;
+
+        // Load our data into our array
+        var data = getData();
+
+        /***************************************************************************************
+         * Functions
+         ****************************************************************************************/
+        function updateDisplay() {
+            theTime = new Date();
+            // Debugging
+            console.log(
+                "Display : " +
+                (theTime.getHours() < 10 ? "0" + theTime.getHours() : theTime.getHours()) +
+                ":" + (theTime.getMinutes() < 10 ? "0" + theTime.getMinutes() : theTime.getMinutes()) +
+                ":" + (theTime.getSeconds() < 10 ? "0" + theTime.getSeconds() : theTime.getSeconds())
+            );
+            // Now update the document
+            var timeRead = data[index].time_seconds;
+            if (timeRead >= 10) {
+                document.getElementById("data").rows["seconds"].innerHTML = dataRow("Time elapsed", data[index]
+                    .time_seconds, "seconds");
+                document.getElementById("data").rows["latitude"].innerHTML = dataRow("Latitud", data[index].latitude, " ");
+                document.getElementById("data").rows["longitude"].innerHTML = dataRow("Longltude", data[index].longitude,
+                    " ");
+                document.getElementById("data").rows["gps_altitude"].innerHTML = dataRow("GPS Altitude", data[index]
+                    .gps_altitude, " ");
+                document.getElementById("data").rows["bmpSensor_altitude"].innerHTML = dataRow("BMP Sensor Altitude", data[
+                    index].bmpSensor_altitude, "");
+                document.getElementById("data").rows["bmpSensor_pressure"].innerHTML = dataRow("BMP Sensor Pressure", data[
+                    index].bmpSensor_pressure, "");
+                document.getElementById("data").rows["bmpSensor_temp"].innerHTML = dataRow("BMP Sensor Temperature", data[
+                    index].bmpSensor_temp, "");
+                document.getElementById("data").rows["digSensor_temp"].innerHTML = dataRow("Digital Sensor Temperature",
+                    data[index].digSensor_temp, "");
+                document.getElementById("data").rows["cssSensor_temp"].innerHTML = dataRow("CSS Sensor Temperature", data[
+                    index].cssSensor_temp, "");
+                document.getElementById("data").rows["cssSensor_eCO2"].innerHTML = dataRow("CSS Sensor eCO2", data[index]
+                    .cssSensor_eCO2, "");
+                document.getElementById("data").rows["cssSensor_TVOC"].innerHTML = dataRow("CSS Sensor TVOC", data[index]
+                    .cssSensor_TVOC, "");
+                document.getElementById("data").rows["UV"].innerHTML = dataRow("UV", data[index].UV, " ");
+                document.getElementById("data").rows["accelX"].innerHTML = dataRow("Accel X", data[index].accelX, " ");
+                document.getElementById("data").rows["accelY"].innerHTML = dataRow("Accel Y", data[index].accelY, " ");
+                document.getElementById("data").rows["accelZ"].innerHTML = dataRow("Accel Z", data[index].accelZ, " ");
+                document.getElementById("data").rows["magneticX"].innerHTML = dataRow("Magnetic X", data[index].magneticX,
+                    " ");
+                document.getElementById("data").rows["magneticY"].innerHTML = dataRow("Magnetic Y", data[index].magneticY,
+                    " ");
+                document.getElementById("data").rows["magneticZ"].innerHTML = dataRow("Magnetic Z", data[index].magneticZ,
+                    " ");
+                document.getElementById("data").rows["gyroX"].innerHTML = dataRow("Gyro X", data[index].gyroX, " ");
+                document.getElementById("data").rows["gyroY"].innerHTML = dataRow("Gyro Y", data[index].gyroY, " ");
+                document.getElementById("data").rows["gyroZ"].innerHTML = dataRow("Gyro Z", data[index].gyroZ, " ");
+
+                if (index < 499) {
+                    index++;
+                } else {
+                    index = 0;
+                }
+            }
+
+            document.getElementById("time").innerHTML =
+                (theTime.getHours() < 10 ? "0" + theTime.getHours() : theTime.getHours()) +
+                ":" + (theTime.getMinutes() < 10 ? "0" + theTime.getMinutes() : theTime.getMinutes()) +
+                ":" + (theTime.getSeconds() < 10 ? "0" + theTime.getSeconds() : theTime.getSeconds());
+
+
+        }
+
+        // Stop the timer
+        function stop() {
+            clearInterval(timer);
+            document.getElementById("startButton").disabled = false;
+            document.getElementById("stopButton").disabled = true;
+        }
+
+        // Start the timer
+        function start() {
+            document.getElementById("data").rows["seconds"].innerHTML = "Reading data...";
+            index = 0;
+            timer = setInterval(updateDisplay, time_interval);
+            document.getElementById("startButton").disabled = true;
+            document.getElementById("stopButton").disabled = false;
+        }
+    </script>
+    </head>
+
+</html>
